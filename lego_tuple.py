@@ -19,5 +19,5 @@ Lego_colours = [Lego('black',(0,0,0),1,614126),
            Lego('medium_lavender',(172,120,186),16,6133802)
 ]
 
-def Lego_func():
+def Lego_return_tuple():
     return Lego_colours
