@@ -2,8 +2,10 @@ import itertools
 
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
+
 from lego_image import return_cube_total, return_cubes
 from lego_tuple import Lego_return_tuple
+
 
 class PDF(FPDF):
     def footer(self):
@@ -12,8 +14,16 @@ class PDF(FPDF):
         # Setting font: helvetica italic 8
         self.set_font("helvetica", "I", 8)
         # Printing page number:
-        self.cell(0, 10, f"Page {self.page_no()}/{{nb}}", new_x=XPos.RIGHT, new_y=YPos.NEXT,align="C", fill='False')
-        
+        self.cell(
+            0,
+            10,
+            f"Page {self.page_no()}/{{nb}}",
+            new_x=XPos.RIGHT,
+            new_y=YPos.NEXT,
+            align="C",
+            fill="False",
+        )
+
 
 pdf = PDF()
 CUBES = return_cubes()
@@ -23,7 +33,9 @@ line_endpoint = 208
 grid_number = [str(i) for i in range(1, 4)]
 grid_letter = list("ABC")
 
+
 class LEGO_plate(object):
+    """Class generates a drawing of round LEGO part with correct colour """
     def __init__(self, cord_x, cord_y, colour, text):
         self.cord_x = cord_x
         self.cord_y = cord_y
@@ -68,6 +80,7 @@ class LEGO_plate(object):
 
 
 def main_page():
+    """Function generates PDF page with 48x48 pixelated image and coordinates grid"""
     pdf.add_page()
     pdf.line(
         line_grid_start_x - 64, 2, line_grid_start_x - 64, line_endpoint
@@ -113,18 +126,25 @@ def main_page():
                     pdf.text(9.2 + row * 4, 11.2 + n * 4, f"{q.ID}")
     pdf.set_text_color(r=0, g=0, b=0)
     pdf.set_fill_color(r=255, g=255, b=255)
-                    
+
+
 def part_description():
+    """Function generates PDF page with part list description"""
     pdf.add_page()
     for i, part in enumerate(Lego_return_tuple()):
-            lego_part = LEGO_plate(
-            140 + 8 * i, 0, part.RGB, f"{part.ID} - Part number: {part.LEGO_part_number}")
-            lego_part.print_it()
+        lego_part = LEGO_plate(
+            140 + 8 * i,
+            0,
+            part.RGB,
+            f"{part.ID} - Part number: {part.LEGO_part_number}",
+        )
+        lego_part.print_it()
     pdf.set_text_color(r=0, g=0, b=0)
     pdf.set_fill_color(r=255, g=255, b=255)
 
 
 def pages_of_manual():
+    """Function generates a PDF with 9 pages of 16x16 cubes showing each part of pixelated image"""
     for cube_number, cube in enumerate(CUBES):
         # pdf.set_line_width(1)
         text = "".join(
@@ -134,7 +154,7 @@ def pages_of_manual():
         pdf.set_text_color(r=0, g=0, b=0)
         pdf.set_font("helvetica", "B", 30)
         pdf.text(100, 9, text)
-        
+
         for row in range(16):
             line = cube[0 + row * 16 : 16 + row * 16]
             for q, (n, l) in itertools.product(Lego_return_tuple(), enumerate(line)):

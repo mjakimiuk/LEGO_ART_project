@@ -5,17 +5,25 @@ from PIL import Image
 
 from lego_tuple import Lego_return_tuple
 
-im = Image.open("sponge.png")
-rgb_im = im.convert("RGB")
+im = Image.open("joker.jpg") # what is a good way to pass argument from main project.py file?
+# rgb_im = im.convert("RGB")
 size = (48, 48)
-resized_im = rgb_im.resize(size)
-pix = resized_im.load()
+
+
 tpl_x = range(48)
 tpl_y = range(48)
 COLORS = [i.RGB for i in Lego_return_tuple()]
 
 
+im = Image.open('joker.jpg') 
+rgb_im = im.convert("RGB")
+resized_im = rgb_im.resize(size)
+pix = resized_im.load()
+
+
+
 def closest_color(rgb):
+    """Function returns closest matching colour from a list of given colours"""
     r, g, b = rgb
     color_diffs = []
     for color in COLORS:
@@ -24,8 +32,16 @@ def closest_color(rgb):
         color_diffs.append((color_diff, color))
     return min(color_diffs)[1]
 
+for x, y in itertools.product(tpl_x, tpl_y):
+        pixel = closest_color(resized_im.getpixel((x, y)))
+        pix[x, y] = pixel
+
+resized_im.save("output.png")
+
+
 
 def return_cubes():
+    """Function returns a list with 9 cubes. Each cubes consits of 16x16 tuples with closest matching colour for each pixel from resized image"""
     CUBE_1 = []
     CUBE_2 = []
     CUBE_3 = []
@@ -60,6 +76,7 @@ def return_cubes():
 
 
 def return_cube_total():
+    """Function returns a list with 48x48 tuples with closest matching colour for each pixel from resized image"""
     CUBE_TOTAL = []
     for x, y in itertools.product(tpl_x, tpl_y):
         pixel = closest_color(resized_im.getpixel((x, y)))
@@ -68,4 +85,4 @@ def return_cube_total():
     return CUBE_TOTAL
 
 
-resized_im.save("output.png")
+
