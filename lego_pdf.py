@@ -4,7 +4,7 @@ from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 
 from lego_image import return_cube_total, return_cubes
-from lego_tuple import Lego_return_tuple
+from lego_tuple import Lego_colours
 
 
 class PDF(FPDF):
@@ -110,7 +110,7 @@ def main_page():
         pdf.text(2 + n * 200, 40 + i * 64, text)  # vertical grid numbers
     for row in range(48):
         line = return_cube_total()[0 + row * 48 : 48 + row * 48]
-        for q, (n, l) in itertools.product(Lego_return_tuple(), enumerate(line)):
+        for q, (n, l) in itertools.product(Lego_colours, enumerate(line)):
             if q.RGB == l:
                 if q.RGB == (0, 0, 0):
                     pdf.set_text_color(r=255, g=255, b=255)
@@ -131,13 +131,13 @@ def main_page():
 def part_description():
     """Function generates PDF page with part list description"""
     pdf.add_page()
-    for i, part in enumerate(Lego_return_tuple()):
+    for i, part in enumerate(Lego_colours):
         lego_part = LEGO_plate(
             140 + 8 * i,
             0,
             part.RGB,
             f"{part.ID} - Part number: {part.LEGO_part_number}",
-        )
+        ) # 'i' is number of parts in Lego_colours list. '140 + 8*i' are coordinates for each part to be printed on page
         lego_part.print_it()
     pdf.set_text_color(r=0, g=0, b=0)
     pdf.set_fill_color(r=255, g=255, b=255)
@@ -157,7 +157,7 @@ def pages_of_manual():
 
         for row in range(16):
             line = cube[0 + row * 16 : 16 + row * 16]
-            for q, (n, l) in itertools.product(Lego_return_tuple(), enumerate(line)):
+            for q, (n, l) in itertools.product(Lego_colours, enumerate(line)):
                 if q.RGB == l:
                     if q.RGB == (0, 0, 0):
                         pdf.set_text_color(r=255, g=255, b=255)

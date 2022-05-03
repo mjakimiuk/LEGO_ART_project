@@ -19,7 +19,3 @@ Lego_colours = [
     Lego("brick_yellow", (228, 205, 158), 15, 4161734),
     Lego("medium_lavender", (172, 120, 186), 16, 6133802),
 ]
-
-
-def Lego_return_tuple():
-    return Lego_colours
