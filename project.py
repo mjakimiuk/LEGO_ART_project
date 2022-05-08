@@ -1,4 +1,4 @@
-from lego_image import *
+from lego_image import lego_object
 from lego_pdf import main_page, pages_of_manual, part_description, save_output
 
 
